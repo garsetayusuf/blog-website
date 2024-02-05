@@ -44,8 +44,7 @@ const Navigation = () => {
               height={40}
             />
           </button>
-          <Navbar />
-          <Sidebar />
+          {selectorIsSshow ? <Sidebar /> : <Navbar />}
         </div>
       </div>
     </div>

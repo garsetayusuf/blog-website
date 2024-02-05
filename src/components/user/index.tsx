@@ -126,7 +126,7 @@ const UserData = () => {
               type="button"
               disabled={loading}
               onClick={handleClear}
-              className="absolute max-sm:top-[98px] max-sm:right-[32px] top-[110px] right-[45px] bg-white"
+              className="absolute max-sm:top-[96px] max-sm:right-[32px] top-[110px] right-[45px] bg-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -236,7 +236,13 @@ const UserData = () => {
               </tbody>
             </table>
           </div>
-          <Pagination />
+          {usersSearch.length > 0 ? (
+            <Pagination />
+          ) : (
+            <div className="h-[300px] flex justify-center items-center text-lg font-semibold text-gray-400">
+              No Data To Display.
+            </div>
+          )}
         </>
       )}
     </div>

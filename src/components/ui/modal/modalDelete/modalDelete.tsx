@@ -6,7 +6,7 @@ import {
   DialogTitle,
 } from "../../dialog";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/defaultHooks";
-import { setShowModal } from "@/redux/slices/userSlice";
+import { setSearchValue, setShowModal } from "@/redux/slices/userSlice";
 import { deleteUserById } from "@/api/userApi";
 import { useGetAllUser } from "@/redux/hooks/userHook";
 import { resetFormData } from "@/redux/slices/formSlice";
@@ -24,6 +24,7 @@ const ModalDelete = () => {
     const response = await deleteUserById(userId);
 
     if (response.status === 204) {
+      dispatch(setSearchValue(""));
       fetchData();
       dispatch(resetFormData());
       dispatch(setShowModal(false));
