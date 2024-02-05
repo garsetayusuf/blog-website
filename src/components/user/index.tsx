@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import styles from "@/styles/user.module.css";
 import { useGetAllUser } from "@/redux/hooks/userHook";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/defaultHooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
   setMode,
+  setSearchValue,
   setShowModal,
+  setTimer,
   setUserId,
   setUsersSearch,
 } from "@/redux/slices/userSlice";
 import { getUserById } from "@/api/userApi";
 import { setFormData } from "@/redux/slices/formSlice";
 import React, { useEffect, useRef } from "react";
-import { debounce } from "@/plugin/debounce";
 import { setTotalPage } from "@/redux/slices/paginatorSlice";
 import Pagination from "../ui/pagination";
 import { RotatingLines } from "react-loader-spinner";
@@ -24,7 +24,9 @@ const UserData = () => {
   const dispatch = useAppDispatch();
   const { fetchData } = useGetAllUser();
   const initialized = useRef(false);
-  const { users, usersSearch, loading } = useAppSelector((state) => state.user);
+  const { users, usersSearch, loading, searchValue, timer } = useAppSelector(
+    (state) => state.user
+  );
   const { currentPage, currentSize } = useAppSelector(
     (state) => state.paginator
   );
@@ -63,24 +65,32 @@ const UserData = () => {
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    delayedSearch(value);
+    dispatch(setSearchValue(value));
+    clearTimeout(timer as any);
+
+    const newTimer = setTimeout(() => {
+      if (value.trim() === "") {
+        dispatch(setSearchValue(""));
+        fetchData();
+      } else {
+        const results = users.filter(
+          (user) =>
+            user.name.toLowerCase().includes(value.toLowerCase()) ||
+            user.email.toLowerCase().includes(value.toLowerCase())
+        );
+
+        dispatch(setUsersSearch(results));
+        dispatch(setTotalPage(results.length));
+      }
+    }, 1000);
+
+    dispatch(setTimer(newTimer));
   };
 
-  const delayedSearch = debounce((value: string) => {
-    if (value.trim() === "") {
-      dispatch(setUsersSearch(users));
-      dispatch(setTotalPage(users.length));
-    } else {
-      const results = users.filter(
-        (user) =>
-          user.name.toLowerCase().includes(value.toLowerCase()) ||
-          user.email.toLowerCase().includes(value.toLowerCase())
-      );
-
-      dispatch(setUsersSearch(results));
-      dispatch(setTotalPage(results.length));
-    }
-  }, 1000);
+  const handleClear = () => {
+    dispatch(setSearchValue(""));
+    fetchData();
+  };
 
   return (
     <div className="max-sm:p-5 p-8">
@@ -107,8 +117,32 @@ const UserData = () => {
             disabled={loading}
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:outline-[#1890FF] focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             placeholder="Search name or email"
+            value={searchValue}
             onChange={(e) => handleSearch(e)}
           />
+          {searchValue && (
+            <button
+              type="button"
+              disabled={loading}
+              onClick={handleClear}
+              className="absolute top-[110px] right-[45px] bg-white"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="h-6 w-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          )}
         </div>
       </div>
       {loading ? (

@@ -61,7 +61,6 @@ const Pagination = () => {
                 className={styles.pageLink}
                 onClick={() => {
                   dispatch(setCurrentPage(page as number));
-                  console.log("click");
                 }}
               >
                 {page}

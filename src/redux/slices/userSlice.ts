@@ -9,6 +9,8 @@ const initialState: UserState = {
   mode: "create",
   userId: null,
   loading: true,
+  searchValue: "",
+  timer: null,
 };
 
 // Create Slice
@@ -37,6 +39,12 @@ const usersSlice = createSlice({
     setLoading: (state: any, action: PayloadAction<string | any>) => {
       state.loading = action.payload;
     },
+    setSearchValue: (state: any, action: PayloadAction<string | any>) => {
+      state.searchValue = action.payload;
+    },
+    setTimer: (state: any, action: PayloadAction<string | any>) => {
+      state.timer = action.payload;
+    },
   },
 });
 
@@ -48,5 +56,7 @@ export const {
   setMode,
   setUserId,
   setLoading,
+  setSearchValue,
+  setTimer,
 } = usersSlice.actions;
 export default usersSlice.reducer;
