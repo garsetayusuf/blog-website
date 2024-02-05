@@ -15,11 +15,11 @@ const BlogDetail = () => {
   useGetBlogsById();
 
   return (
-    <div className="mx-[32rem] px-4 md:px-6 lg:py-6 md:py-6">
+    <div className="md:px-28 lg:px-52 xl:mx-32 2xl:mx-[20rem] p-5 lg:py-6 md:py-6">
       <button
         type="button"
         onClick={() => router.push(`/`)}
-        className="mb-10 flex flex-row items-center bg-gray-200 rounded-lg px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-[#d2d2d2]"
+        className="max-sm:mb-5 mb-10 flex flex-row items-center bg-gray-200 rounded-lg px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-[#d2d2d2]"
       >
         <Icon icon="carbon:chevron-left" width={15} height={15} />
         <p className="px-1">Back</p>
@@ -39,7 +39,7 @@ const BlogDetail = () => {
           </div>
         ) : (
           <>
-            <div className="space-y-2 not-prose">
+            <div className="space-y-2 mb-8">
               <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl lg:leading-[3.5rem]">
                 {blogDetail.title}
               </h1>
