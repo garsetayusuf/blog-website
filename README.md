@@ -50,3 +50,18 @@ Follow the steps below to set up and run the project locally:
    ```
 
 5. Open your browser and visit http://localhost:3000 to view the survey app.
+
+## Usage
+
+- Navigate through the application to explore different features.
+- View blog post list and details.
+- Manage users (Create, Read, Update, Delete).
+- Search for specific users.
+- Experience smooth CRUD operations without page refresh.
+- Test the responsiveness of the application on different devices.
+
+## Tech Stack
+
+**Next.js**,
+**Redux**,
+**Tailwind CSS** (for dynamic styling)
