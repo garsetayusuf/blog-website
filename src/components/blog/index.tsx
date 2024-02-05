@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 import { setBlogCurrent } from "@/redux/slices/blogSlice";
 import BlogItem from "./blogItem/blogitem";
 import { RotatingLines } from "react-loader-spinner";
+import { setCurrentPage } from "@/redux/slices/paginatorSlice";
 
 export const Blog = () => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ export const Blog = () => {
 
   useEffect(() => {
     if (!initialized.current) {
+      dispatch(setCurrentPage(1));
       fetchData();
       initialized.current = true;
     }

@@ -33,12 +33,12 @@ const ModalDelete = () => {
     <DialogHeader>
       <DialogTitle>Delete User</DialogTitle>
       <DialogDescription className="pt-5">
-        Are you sure you want to delete?
+        Are you sure to delete?
       </DialogDescription>
-      <DialogFooter className="sm:justify-end pt-3">
+      <DialogFooter className="flex flex-row justify-end pt-4 max-sm:gap-3">
         <button
           type="button"
-          className="flex flex-row items-center focus:outline-none bg-white rounded-lg px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-200 hover:text-red-600"
+          className="flex flex-row items-center focus:outline-none bg-gray-100 rounded-lg px-3 py-2 text-sm font-semibold text-red-600 hover:bg-red-200 hover:text-red-600"
           onClick={handleClose}
         >
           Close

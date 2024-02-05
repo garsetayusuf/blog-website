@@ -15,7 +15,7 @@ import {
 import { getUserById } from "@/api/userApi";
 import { setFormData } from "@/redux/slices/formSlice";
 import React, { useEffect, useRef } from "react";
-import { setTotalPage } from "@/redux/slices/paginatorSlice";
+import { setCurrentPage, setTotalPage } from "@/redux/slices/paginatorSlice";
 import Pagination from "../ui/pagination";
 import { RotatingLines } from "react-loader-spinner";
 import Modal from "../ui/modal/modal";
@@ -33,6 +33,7 @@ const UserData = () => {
 
   useEffect(() => {
     if (!initialized.current) {
+      dispatch(setCurrentPage(1));
       fetchData();
       initialized.current = true;
     }
@@ -162,7 +163,7 @@ const UserData = () => {
             <table className="caption-bottom text-sm w-full">
               <thead>
                 <tr className="border-b transition-colors">
-                  <th className="h-12 px-4 text-left align-middle font-semibold">
+                  <th className="h-12 px-4 text-left align-middle font-semibold min-w-44">
                     Name
                   </th>
                   <th className="h-12 px-4 text-left align-middle font-semibold">
@@ -187,7 +188,7 @@ const UserData = () => {
                         key={item.id}
                         className="border-b transition-colors hover:bg-gray-100"
                       >
-                        <td className="p-3 align-middle font-medium">
+                        <td className="p-3 align-middle font-medium min-w-44">
                           {item.name}
                         </td>
                         <td className="p-3 align-middle">{item.email}</td>
