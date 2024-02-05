@@ -125,7 +125,7 @@ const UserData = () => {
               type="button"
               disabled={loading}
               onClick={handleClear}
-              className="absolute top-[110px] right-[45px] bg-white"
+              className="absolute max-sm:top-[98px] max-sm:right-[32px] top-[110px] right-[45px] bg-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
