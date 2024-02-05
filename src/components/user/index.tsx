@@ -128,19 +128,19 @@ const UserData = () => {
             <table className="caption-bottom text-sm w-full">
               <thead>
                 <tr className="border-b transition-colors">
-                  <th className="h-12 px-4 text-left align-middle font-medium">
+                  <th className="h-12 px-4 text-left align-middle font-semibold">
                     Name
                   </th>
-                  <th className="h-12 px-4 text-left align-middle font-medium">
+                  <th className="h-12 px-4 text-left align-middle font-semibold">
                     Email
                   </th>
-                  <th className="h-12 px-4 text-left align-middle font-medium">
+                  <th className="h-12 px-4 text-left align-middle font-semibold">
                     Gender
                   </th>
-                  <th className="h-12 px-4 text-center align-middle font-medium">
+                  <th className="h-12 px-4 text-center align-middle font-semibold">
                     Status
                   </th>
-                  <th className="h-12 px-4 text-center align-middle font-medium">
+                  <th className="h-12 px-4 text-center align-middle font-semibold">
                     Actions
                   </th>
                 </tr>
