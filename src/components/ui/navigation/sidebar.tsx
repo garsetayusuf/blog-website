@@ -8,6 +8,7 @@ const Sidebar = () => {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
   const { isShow } = useAppSelector((state) => state.navigation);
+  const blogPathDetail = pathname.includes("/blog") ? "/" : null;
 
   const toggle = () => {
     if (!isShow) {
@@ -32,8 +33,10 @@ const Sidebar = () => {
             <Link href={item.path} onClick={toggle}>
               <p
                 className={`${
-                  pathname === item.path ? "text-red-500" : ""
-                } py-2`}
+                  pathname === item.path || blogPathDetail === item.path
+                    ? "text-red-500"
+                    : ""
+                }`}
               >
                 {item.name}
               </p>
