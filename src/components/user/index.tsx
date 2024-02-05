@@ -102,7 +102,7 @@ const UserData = () => {
             dispatch(setShowModal(true)), dispatch(setMode("create"))
           )}
           disabled={loading}
-          className="py-5 inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:bg-green-200 hover:text-green-800 h-9 rounded-md px-3"
+          className="py-[19px] inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:bg-green-200 hover:text-green-800 h-9 rounded-md px-3"
         >
           <Icon
             icon="flowbite:user-add-outline"
