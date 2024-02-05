@@ -4,12 +4,15 @@ import { useRouter } from "next/navigation";
 import moment from "moment";
 import CommentForm from "./commentForm/commentForm";
 import { RotatingLines } from "react-loader-spinner";
+import { useGetBlogsById } from "@/redux/hooks/blogHook";
 
 const BlogDetail = () => {
   const router = useRouter();
   const { blogDetail, comment, loadingComment } = useAppSelector(
     (state) => state.blogs
   );
+
+  useGetBlogsById();
 
   return (
     <div className="mx-[32rem] px-4 md:px-6 lg:py-6 md:py-6">
@@ -23,7 +26,18 @@ const BlogDetail = () => {
       </button>
 
       <article className="text-gray-700 mx-auto">
-        {blogDetail.id !== 0 ? (
+        {loadingComment ? (
+          <div className="flex justify-center items-center">
+            <RotatingLines
+              visible={true}
+              width="50"
+              strokeColor="#1890FF"
+              strokeWidth="3"
+              animationDuration="0.75"
+              ariaLabel="rotating-lines-loading"
+            />
+          </div>
+        ) : (
           <>
             <div className="space-y-2 not-prose">
               <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl lg:leading-[3.5rem]">
@@ -37,17 +51,6 @@ const BlogDetail = () => {
             </div>
             <p className="text-base my-6">{blogDetail.body}</p>
           </>
-        ) : (
-          <div className="flex justify-center items-center">
-            <RotatingLines
-              visible={true}
-              width="50"
-              strokeColor="#1890FF"
-              strokeWidth="3"
-              animationDuration="0.75"
-              ariaLabel="rotating-lines-loading"
-            />
-          </div>
         )}
 
         <h2 className="mb-5 mt-10 text-2xl font-bold">Comments</h2>

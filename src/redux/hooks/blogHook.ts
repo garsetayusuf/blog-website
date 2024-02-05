@@ -56,7 +56,7 @@ export const useGetBlogs = () => {
 
 export const useGetBlogsById = () => {
   const dispatch = useAppDispatch();
-  const { blogId } = useAppSelector((state) => state.blogs);
+  const { blogId, blogDetail } = useAppSelector((state) => state.blogs);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,20 +77,24 @@ export const useGetBlogsById = () => {
 
         dispatch(setBlogDetail(responseBlog.data));
         dispatch(setComment(responseComment.data));
-        dispatch(setLoadingComment(false));
+        setTimeout(() => {
+          dispatch(setLoadingComment(false));
+        }, 1000);
       } catch (error) {
         console.log(error);
       }
     };
 
-    fetchData();
+    if (blogId) {
+      fetchData();
+    }
   }, [blogId]);
 };
 
 export const useCommentBlogsById = () => {
   const dispatch = useAppDispatch();
   const { blogId } = useAppSelector((state) => state.blogs);
-  const { form } = useAppSelector((state) => state);
+  const form = useAppSelector((state) => state.form);
 
   const postData = async () => {
     try {

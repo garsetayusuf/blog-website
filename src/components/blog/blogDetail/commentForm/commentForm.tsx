@@ -5,7 +5,7 @@ import { setFormData } from "@/redux/slices/formSlice";
 const CommentForm = () => {
   const dispatch = useAppDispatch();
   const { postData } = useCommentBlogsById();
-  const { form } = useAppSelector((state) => state);
+  const form = useAppSelector((state) => state.form);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
