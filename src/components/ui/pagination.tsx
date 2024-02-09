@@ -1,6 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/defaultHooks";
 import styles from "@/styles/paginator.module.css";
 import { setCurrentPage, setCurrentSize } from "@/redux/slices/paginatorSlice";
+import { useMemo } from "react";
 
 const Pagination = () => {
   const dispatch = useAppDispatch();
@@ -8,25 +9,32 @@ const Pagination = () => {
     (state) => state.paginator
   );
 
-  const pagesCount = Math.ceil(totalPage / currentSize);
-  const totalPagesToShow = 3;
+  // memorize function when currentPage, currentSize, totalPage change
+  const { pagesCount, startPage, endPage } = useMemo(() => {
+    const pagesCount = Math.ceil(totalPage / currentSize);
+    const totalPagesToShow = 3;
+
+    let startPage = currentPage - Math.floor(totalPagesToShow / 2);
+    let endPage = currentPage + Math.floor(totalPagesToShow / 2);
+
+    if (startPage <= 0) {
+      startPage = 1;
+      endPage = Math.min(pagesCount, totalPagesToShow);
+    }
+
+    if (endPage > pagesCount) {
+      endPage = pagesCount;
+      startPage = Math.max(1, endPage - totalPagesToShow + 1);
+    }
+
+    return { pagesCount, startPage, endPage };
+  }, [currentPage, currentSize, totalPage]);
 
   const pages = [];
-  let startPage = currentPage - Math.floor(totalPagesToShow / 2);
-  let endPage = currentPage + Math.floor(totalPagesToShow / 2);
-
-  if (startPage <= 0) {
-    startPage = 1;
-    endPage = totalPagesToShow;
-  }
-
-  if (endPage > pagesCount) {
-    endPage = pagesCount;
-    startPage = Math.max(1, endPage - totalPagesToShow + 1);
-  }
-
   if (startPage > 1) {
     pages.push(1);
+
+    // add elipsis after start paginator
     if (startPage > 2) {
       pages.push("...");
     }
@@ -37,11 +45,24 @@ const Pagination = () => {
   }
 
   if (endPage < pagesCount) {
+    // add elipsis before end paginator
     if (endPage < pagesCount - 1) {
       pages.push("...");
     }
     pages.push(pagesCount);
   }
+
+  const handlePageClick = (page: number | string) => {
+    if (typeof page === "number") {
+      dispatch(setCurrentPage(page));
+    }
+  };
+
+  const handleSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newSize = parseInt(e.target.value);
+    dispatch(setCurrentSize(newSize));
+    dispatch(setCurrentPage(1));
+  };
 
   return (
     <div className="flex max-sm:flex-col max-sm:gap-4 max-sm:float-none justify-end max-sm:px-4 gap-10 items-center">
@@ -59,9 +80,7 @@ const Pagination = () => {
               <button
                 type="button"
                 className={styles.pageLink}
-                onClick={() => {
-                  dispatch(setCurrentPage(page as number));
-                }}
+                onClick={() => handlePageClick(page)}
               >
                 {page}
               </button>
@@ -74,10 +93,7 @@ const Pagination = () => {
         <select
           className={`${styles.select} rounded-lg px-2 py-1 focus:outline-none cursor-pointer`}
           defaultValue={currentSize}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-            dispatch(setCurrentSize(parseInt(e.target.value)));
-            dispatch(setCurrentPage(1));
-          }}
+          onChange={handleSizeChange}
         >
           <option value="10">10</option>
           <option value="25">25</option>
