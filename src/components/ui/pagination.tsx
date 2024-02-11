@@ -8,7 +8,6 @@ const Pagination = () => {
   const { currentPage, currentSize, totalPage } = useAppSelector(
     (state) => state.paginator
   );
-  const { loading } = useAppSelector((state) => state.user);
 
   // memorize function when currentPage, currentSize, totalPage change
   const { pagesCount, startPage, endPage } = useMemo(() => {
@@ -71,12 +70,11 @@ const Pagination = () => {
         {pages.map((page, index) => (
           <button
             key={index}
-            disabled={loading}
             type="button"
             className={`${
               page === currentPage ? styles.pageItemActive : styles.pageItem
             }
-              ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+              ${page === "..." ? "cursor-not-allowed" : "cursor-pointer"}`}
             onClick={() => handlePageClick(page)}
           >
             {page}

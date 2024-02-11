@@ -4,7 +4,6 @@ import { BlogsType, CommentType } from "../types/blogType";
 
 const initialState: BlogState = {
   blogs: [],
-  blogsCurrent: [],
   showEllipsis: false,
   blogId: null,
   blogDetail: {
@@ -24,9 +23,6 @@ const blogsSlice = createSlice({
   reducers: {
     setBlog: (state: any, action: PayloadAction<Array<BlogsType>>) => {
       state.blogs = action.payload;
-    },
-    setBlogCurrent: (state: any, action: PayloadAction<Array<BlogsType>>) => {
-      state.blogsCurrent = action.payload;
     },
     setShowEllipsis: (state: any, action: PayloadAction<boolean>) => {
       state.showEllipsis = action.payload;
@@ -49,7 +45,6 @@ const blogsSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
   setBlog,
-  setBlogCurrent,
   setShowEllipsis,
   setBlogDetail,
   setBlogId,

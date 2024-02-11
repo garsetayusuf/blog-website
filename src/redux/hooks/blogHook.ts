@@ -18,45 +18,31 @@ import { setTotalPage } from "../slices/paginatorSlice";
 
 export const useGetBlogs = () => {
   const dispatch = useAppDispatch();
+  const { currentPage, currentSize } = useAppSelector(
+    (state) => state.paginator
+  );
 
-  const fetchData = async () => {
+  const fetchDataPagination = async () => {
     try {
-      dispatch(setBlog([]));
-      const response = await getAllBlogWithPagination(1, 100);
+      const response = await getAllBlogWithPagination(currentPage, currentSize);
       const totalPages = response.headers["x-pagination-pages"];
-      const currentPage = response.headers["x-pagination-page"];
-      const round = Math.ceil(totalPages / 100) * 1; // Round up to the nearest integer
+      let allBlogData: any[] = [];
+      allBlogData = allBlogData.concat(response.data);
+      allBlogData.sort((a, b) => (a.title > b.title ? 1 : -1));
 
-      let allUserData: any[] = [];
-      allUserData = allUserData.concat(response.data);
-
-      for (let page = currentPage; page <= round; page++) {
-        const nextPageResponse = await getAllBlogWithPagination(page, 100);
-
-        // Filter out users already present in allUserData
-        const uniqueUsers = nextPageResponse.data.filter((user: any) => {
-          return !allUserData.some(
-            (existingUser) => existingUser.id === user.id
-          );
-        });
-
-        // Concatenate unique users to allUserData
-        allUserData = allUserData.concat(uniqueUsers);
-      }
-
-      dispatch(setBlog(allUserData));
+      dispatch(setBlog(allBlogData));
       dispatch(setTotalPage(totalPages));
     } catch (error) {
       console.log(error);
     }
   };
 
-  return { fetchData };
+  return { fetchDataPagination };
 };
 
 export const useGetBlogsById = () => {
   const dispatch = useAppDispatch();
-  const { blogId, blogDetail } = useAppSelector((state) => state.blogs);
+  const { blogId } = useAppSelector((state) => state.blogs);
 
   useEffect(() => {
     const fetchData = async () => {
