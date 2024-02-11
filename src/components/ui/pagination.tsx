@@ -8,6 +8,7 @@ const Pagination = () => {
   const { currentPage, currentSize, totalPage } = useAppSelector(
     (state) => state.paginator
   );
+  const { loading } = useAppSelector((state) => state.user);
 
   // memorize function when currentPage, currentSize, totalPage change
   const { pagesCount, startPage, endPage } = useMemo(() => {
@@ -66,28 +67,22 @@ const Pagination = () => {
 
   return (
     <div className="flex max-sm:flex-col max-sm:gap-4 max-sm:float-none justify-end max-sm:px-4 gap-10 items-center">
-      <ul className={styles.pagination}>
+      <div className={styles.pagination}>
         {pages.map((page, index) => (
-          <li
+          <button
             key={index}
-            className={
+            disabled={loading}
+            type="button"
+            className={`${
               page === currentPage ? styles.pageItemActive : styles.pageItem
             }
+              ${loading ? "cursor-not-allowed" : "cursor-pointer"}`}
+            onClick={() => handlePageClick(page)}
           >
-            {page === "..." ? (
-              <span className={`${styles.dots} cursor-not-allowed`}>...</span>
-            ) : (
-              <button
-                type="button"
-                className={styles.pageLink}
-                onClick={() => handlePageClick(page)}
-              >
-                {page}
-              </button>
-            )}
-          </li>
+            {page}
+          </button>
         ))}
-      </ul>
+      </div>
       <div className="flex gap-2 items-center">
         <span>Show</span>
         <select

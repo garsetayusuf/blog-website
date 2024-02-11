@@ -1,4 +1,3 @@
-import React from "react";
 import {
   DialogDescription,
   DialogFooter,
@@ -8,13 +7,13 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/defaultHooks";
 import { setSearchValue, setShowModal } from "@/redux/slices/userSlice";
 import { deleteUserById } from "@/api/userApi";
-import { useGetAllUser } from "@/redux/hooks/userHook";
 import { resetFormData } from "@/redux/slices/formSlice";
+import { useGetAllUserPagination } from "@/redux/hooks/userHook";
 
 const ModalDelete = () => {
   const dispatch = useAppDispatch();
-  const { fetchData } = useGetAllUser();
   const { userId } = useAppSelector((state) => state.user);
+  const { fetchDataPagination } = useGetAllUserPagination();
 
   const handleClose = () => {
     dispatch(setShowModal(false));
@@ -25,7 +24,7 @@ const ModalDelete = () => {
 
     if (response.status === 204) {
       dispatch(setSearchValue(""));
-      fetchData();
+      fetchDataPagination();
       dispatch(resetFormData());
       dispatch(setShowModal(false));
     }

@@ -4,7 +4,6 @@ import { UsersType } from "../types/userType";
 
 const initialState: UserState = {
   users: [],
-  usersSearch: [],
   showModal: false,
   mode: "create",
   userId: null,
@@ -18,11 +17,8 @@ const usersSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    getUsers: (state: any, action: PayloadAction<Array<UsersType>>) => {
+    setUsers: (state: any, action: PayloadAction<Array<UsersType>>) => {
       state.users = action.payload;
-    },
-    setUsersSearch: (state: any, action: PayloadAction<Array<UsersType>>) => {
-      state.usersSearch = action.payload;
     },
     setShowModal: (state: any, action: PayloadAction<boolean>) => {
       state.showModal = action.payload;
@@ -50,8 +46,7 @@ const usersSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export const {
-  getUsers,
-  setUsersSearch,
+  setUsers,
   setShowModal,
   setMode,
   setUserId,

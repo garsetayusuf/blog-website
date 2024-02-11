@@ -5,10 +5,6 @@
   list-style: none;
 }
 
-.pageLink {
-  cursor: pointer;
-}
-
 /* pagination pageItem */
 .pageItem {
   display: flex;
@@ -18,7 +14,6 @@
   height: 2rem;
   border: 1px solid #eaeaea;
   border-radius: 0.5rem;
-  cursor: pointer;
 }
 
 /* pagination page item when active */
@@ -30,7 +25,6 @@
   height: 2rem;
   border: 1px solid #eaeaea;
   border-radius: 0.5rem;
-  cursor: pointer;
   background-color: #1890ff;
   color: white;
 }

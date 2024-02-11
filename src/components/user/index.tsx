@@ -1,7 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import { useGetAllUser } from "@/redux/hooks/userHook";
+import {
+  useGetAllUserPagination,
+  useGetAllUserSearch,
+} from "@/redux/hooks/userHook";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks/defaultHooks";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
@@ -10,21 +13,19 @@ import {
   setShowModal,
   setTimer,
   setUserId,
-  setUsersSearch,
 } from "@/redux/slices/userSlice";
 import { getUserById } from "@/api/userApi";
 import { setFormData } from "@/redux/slices/formSlice";
-import React, { useEffect, useRef } from "react";
-import { setCurrentPage, setTotalPage } from "@/redux/slices/paginatorSlice";
+import React, { useEffect } from "react";
 import Pagination from "../ui/pagination";
-import { RotatingLines } from "react-loader-spinner";
 import Modal from "../ui/modal/modal";
+import LoadingIcon from "../ui/loadingIcon";
 
 const UserData = () => {
   const dispatch = useAppDispatch();
-  const { fetchData } = useGetAllUser();
-  const initialized = useRef(false);
-  const { users, usersSearch, loading, searchValue, timer } = useAppSelector(
+  const { fetchDataSearch } = useGetAllUserSearch();
+  const { fetchDataPagination } = useGetAllUserPagination();
+  const { users, loading, searchValue, timer } = useAppSelector(
     (state) => state.user
   );
   const { currentPage, currentSize } = useAppSelector(
@@ -32,20 +33,8 @@ const UserData = () => {
   );
 
   useEffect(() => {
-    if (!initialized.current) {
-      dispatch(setCurrentPage(1));
-      fetchData();
-      initialized.current = true;
-    }
-
-    // Calculate start and end indices for slicing the array
-    const startIndex = (currentPage - 1) * currentSize;
-    const endIndex = currentPage * currentSize;
-
-    // Get the data for the current page
-    const data = users.slice(startIndex, endIndex);
-    dispatch(setUsersSearch(data));
-  }, [users, currentPage, currentSize, dispatch]);
+    fetchDataPagination();
+  }, [currentPage, currentSize]);
 
   const handleUpdate = async (id: any) => {
     dispatch(setUserId(id));
@@ -72,16 +61,8 @@ const UserData = () => {
     const newTimer = setTimeout(() => {
       if (value.trim() === "") {
         dispatch(setSearchValue(""));
-        fetchData();
       } else {
-        const results = users.filter(
-          (user) =>
-            user.name.toLowerCase().includes(value.toLowerCase()) ||
-            user.email.toLowerCase().includes(value.toLowerCase())
-        );
-
-        dispatch(setUsersSearch(results));
-        dispatch(setTotalPage(results.length));
+        fetchDataSearch();
       }
     }, 1000);
 
@@ -90,7 +71,7 @@ const UserData = () => {
 
   const handleClear = () => {
     dispatch(setSearchValue(""));
-    fetchData();
+    fetchDataPagination();
   };
 
   return (
@@ -126,7 +107,7 @@ const UserData = () => {
               type="button"
               disabled={loading}
               onClick={handleClear}
-              className="absolute max-sm:top-[96px] max-sm:right-[32px] top-[110px] right-[45px] bg-white"
+              className="absolute max-sm:top-[96px] max-sm:right-[32px] top-[108px] right-[45px] bg-white"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -147,16 +128,7 @@ const UserData = () => {
         </div>
       </div>
       {loading ? (
-        <div className="flex justify-center items-center h-[80vh]">
-          <RotatingLines
-            visible={true}
-            width="96"
-            strokeColor="#1890FF"
-            strokeWidth="3"
-            animationDuration="0.75"
-            ariaLabel="rotating-lines-loading"
-          />
-        </div>
+        <LoadingIcon />
       ) : (
         <>
           <div className="relative w-full overflow-auto my-5">
@@ -181,8 +153,8 @@ const UserData = () => {
                 </tr>
               </thead>
               <tbody>
-                {usersSearch &&
-                  usersSearch.map((item: any) => {
+                {users &&
+                  users.map((item: any) => {
                     return (
                       <tr
                         key={item.id}
@@ -236,14 +208,13 @@ const UserData = () => {
               </tbody>
             </table>
           </div>
-          {usersSearch.length > 0 ? (
-            <Pagination />
-          ) : (
-            <div className="h-[300px] flex justify-center items-center text-lg font-semibold text-gray-400">
-              No Data To Display.
-            </div>
-          )}
         </>
+      )}
+      {users && users.length > 0 && <Pagination />}
+      {users && users.length <= 0 && (
+        <div className="h-[300px] flex justify-center items-center text-lg font-semibold text-gray-400">
+          No Data To Display.
+        </div>
       )}
     </div>
   );
